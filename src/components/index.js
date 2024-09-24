@@ -1,18 +1,8 @@
-// @todo: Темплейт карточки
-
-// @todo: DOM узлы
-
-// @todo: Функция создания карточки
-
-// @todo: Функция удаления карточки
-
-// @todo: Вывести карточки на страницу
-
 import '../index.css';
-import { initialCards } from './cards.js';
-import { createCard, deleteCard, cardLike } from './card.js';
+import { createCard, cardLike } from './card.js';
 import { openModal, closeModal } from './modal.js';
 import { enableValidation, clearValidation } from './validation.js';
+import { getUserData, getInitialCards, editUserData, addNewCard, removeMyCard } from './api.js';
 
 // Контейнер с карточками
 const places = document.querySelector('.places__list');
@@ -35,6 +25,9 @@ const profileAddPopup = document.querySelector('.popup_type_new-card');
 // Модальное окно с картинкой
 const typeImagePopup = document.querySelector('.popup_type_image');
 
+// Модальное окно удаления карточки
+const deleteCardPopup = document.querySelector('.popup_type_delete-card');
+
 // Сама картинка в модальном окне с картинкой
 const popupImage = typeImagePopup.querySelector('.popup__image');
 
@@ -53,8 +46,14 @@ const profileName = document.querySelector('.profile__title');
 // Информация о роде деятельности, отображаемая на странице
 const occupation = document.querySelector('.profile__description');
 
+// Фотография профиля
+const avatar = document.querySelector('.profile__image');
+
 // ФОРМА для ввода данных модального окна с картинкой
 const cardAdding = document.getElementsByName('new-place')[0];
+
+// ФОРМА для удаления карточки
+const cardDeleting = document.getElementsByName('delete-card')[0];
 
 // Поле ввода для названия места в форме для ввода данных модального окна с картинкой
 const placeInput = cardAdding.querySelector('.popup__input_type_card-name'); 
@@ -72,6 +71,9 @@ const validationConfig = {
   errorClass: 'popup__error_visible'
 };
 
+let profileId;
+let cardToRemove = {};
+
 // Функция открытия модального окна с картинкой
 export function openImageModal(link, name) {
   openModal(typeImagePopup);  
@@ -83,22 +85,55 @@ export function openImageModal(link, name) {
 // Функция редактирования личной информации в профиле
 function profileSubmit(event) { 
     event.preventDefault();
-    const name = nameInput.value;
-    const job = jobInput.value;
-    profileName.textContent = name;
-    occupation.textContent = job;
+    editUserData(nameInput.value, jobInput.value)
+      .then((userData) => { 
+    profileName.textContent = userData.name;
+    occupation.textContent = userData.about;
     closeModal(profileEditPopup);
+      })
+      .catch((error) => {
+        console.log("Произошла ошибка:", error);
+      })
 };
 
 // Функция добавления новой карточки
 function newCardSubmit(event) {
   event.preventDefault();
-  const place = placeInput.value;
-  const image = imageInput.value;
-  const newCard = createCard({name:place, link:image, alt:place}, deleteCard, openImageModal, cardLike);
+  addNewCard(placeInput.value, imageInput.value)
+    .then((cardData) => {
+  const newCard = createCard(profileId, cardData, deleteCardOpening, openImageModal, cardLike);
   places.prepend(newCard);
+    })
+    .catch((error) => {
+      console.log("Произошла ошибка:", error);
+    })
   cardAdding.reset();
   closeModal(profileAddPopup);
+};
+
+// Открытие модального окна удаления карточки
+export function deleteCardOpening(cardId, cardElement) {
+  cardToRemove = {
+    id: cardId,
+    cardElement
+  }
+  openModal(deleteCardPopup);
+  cardDeleting.addEventListener('submit', deleteCardSubmit);
+};
+
+// Обработка сабмита в модальном окне удаления карточки
+const deleteCardSubmit = (event) => {
+  event.preventDefault();
+  if (!cardToRemove.cardElement) return;
+  removeMyCard(cardToRemove.id)
+    .then(() => {
+      cardToRemove.cardElement.remove();
+      closeModal(deleteCardPopup);
+      cardToRemove = {};
+    })
+    .catch((err) => {
+      console.log(err);
+    })
 };
 
 // Открытие модального окна с личной информацией
@@ -129,11 +164,20 @@ popupCloseBtns.forEach((button) => {
   })
 });
 
-// Добавление массива карточек на страницу
-initialCards.forEach((cardData) => {
-    const cardElement = createCard(cardData, deleteCard, openImageModal, cardLike);
-    places.append(cardElement);
-});
-
 // Вызов функции включения валидации всех форм
 enableValidation(validationConfig); 
+
+// Загрузка данных пользователя и карточек
+Promise.all([getUserData(), getInitialCards()])
+  .then(([userData, initialCards]) => {
+    profileName.textContent = userData.name;
+    occupation.textContent = userData.about;
+    avatar.style = `background-image: url('${userData.avatar}')`;
+    profileId = userData._id;
+    initialCards.forEach((cardItem) => {
+      places.append(createCard(profileId, cardItem, deleteCardOpening, openImageModal, cardLike));
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });

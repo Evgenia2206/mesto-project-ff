@@ -24,10 +24,3 @@
 .popup__input_type_error {
   border-bottom: 1px, solid, red;
 }
-
-.popup__error_visible {
-  color: red;
-  font-size: 12px;
-  font-family: Inter, sans-serif;
-  font-weight: 400;
-}

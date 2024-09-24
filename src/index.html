@@ -38,9 +38,9 @@
       <h3 class="popup__title">Редактировать профиль</h3>
       <form class="popup__form" name="edit-profile" novalidate>
         <input type="text" id="name__input" name="name" class="popup__input popup__input_type_name" placeholder="Имя" required minlength="2" maxlength="40" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
-        <span class="name__input-error"></span>
+        <span class="name__input-error popup__error"></span>
         <input type="text" id="description__input" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required minlength="2" maxlength="200" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
-        <span class="description__input-error"></span>
+        <span class="description__input-error popup__error"></span>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
     </div>
@@ -51,9 +51,9 @@
       <h3 class="popup__title">Новое место</h3>
       <form class="popup__form" name="new-place" novalidate>
         <input type="text" id="place-name__input" name="place-name" class="popup__input popup__input_type_card-name" placeholder="Название" required minlength="2" maxlength="30" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
-        <span class="place-name__input-error"></span>
+        <span class="place-name__input-error popup__error"></span>
         <input type="url" id="link__input" name="link" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required>
-        <span class="link__input-error"></span>
+        <span class="link__input-error popup__error"></span>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
     </div>
@@ -66,6 +66,15 @@
     </div>
   </div>
 </div>
+<div class="popup popup_type_delete-card popup_is-animated">
+  <div class="popup__content popup__content_content_delete-card">
+    <button type="button" class="popup__close"></button>
+    <h3 class="popup__title">Вы уверены?</h3>
+    <form class="popup__form" name="delete-card" novalidate>
+      <button type="submit" class="button popup__button">Да</button>
+    </form>
+  </div>
+</div>
 
 
 <template id="card-template">
@@ -75,7 +84,10 @@
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
+      <div class="card__like">
+        <button type="button" class="card__like-button"></button>
+        <span class="card__like-counter"></span>
+      </div>      
     </div>
   </li>
 </template>
