@@ -14,13 +14,15 @@
   </header>
   <main class="content">
     <section class="profile page__section">
-      <div class="profile__image" style="background-image: url(<%=require('./images/avatar.jpg')%>)"></div>
-      <div class="profile__info">
-        <h1 class="profile__title">Жак-Ив Кусто</h1>
-        <button class="profile__edit-button popup__open" type="button"></button>
-        <p class="profile__description">Исследователь океана</p>
+      <div class="profile__image">
+        <button class="avatar__edit-button" type="button"></button> 
       </div>
-      <button class="profile__add-button popup__open" type="button"></button>
+      <div class="profile__info">
+        <h1 class="profile__title"></h1>
+        <button class="profile__edit-button" type="button"></button>
+        <p class="profile__description"></p>
+      </div>
+      <button class="profile__add-button" type="button"></button>
     </section>
     <section class="places page__section">
       <ul class="places__list">
@@ -41,6 +43,17 @@
         <span class="name__input-error popup__error"></span>
         <input type="text" id="description__input" name="description" class="popup__input popup__input_type_description" placeholder="Занятие" required minlength="2" maxlength="200" pattern="^[a-zA-Zа-яА-ЯёЁ\s\-]+$" data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
         <span class="description__input-error popup__error"></span>
+        <button type="submit" class="button popup__button">Сохранить</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup_type_avatar_edit popup_is-animated"> 
+    <div class="popup__content">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title">Обновить аватар</h3>
+      <form class="popup__form" name="edit-avatar" novalidate>
+        <input type="url" id="avatar__input" name="avatar" class="popup__input popup__input_type_avatar" placeholder="Ссылка на аватар" required>
+        <span class="avatar__input-error popup__error"></span>
         <button type="submit" class="button popup__button">Сохранить</button>
       </form>
     </div>

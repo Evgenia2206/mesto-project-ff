@@ -39,13 +39,3 @@ export function cardLike(cardId, likeBtn, counter) {
       console.log(err);
     });
 }
-
-/*export const handleLikeIconClick = (cardID, likeButton, likesCount) => { // ожидаем те три аргумента: id, элемент кнопки и количество лайков
-  const isLiked = likeButton.classList.contains("card__like-button_is-active"); // проверяем, содержит ли кнопка по которой кликнули класс активности, то есть что сердечко лайкнуто
-  changeLikeCardStatus(cardID, !isLiked) // вызываем функцию лайка/дизлайка из api.js. В моем случае я объеденил в одну функцию, где в зависимости от isLiked выбираю метод DELETE или PUT. Вы можете сделать if else прямо здесь и вызывать функции лайка/дизлайка.
-    .then((cardData) => {
-      likeButton.classList.toggle("card__like-button_is-active"); // обновляем состояние лайкнутости на нашей кнопке
-      likesCount.textContent = cardData.likes.length; // обновляем счетчик лайков
-    })
-    .catch((err) => console.log(`Ошибка изменения статуса лайка: ${err}`)); // обработчик ошибки
-};*/
