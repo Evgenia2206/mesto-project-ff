@@ -6,7 +6,7 @@
     line-height: 14.52px;
     display: block;
     opacity: 0;
-    min-height: 30px;
+    position: absolute;
   }
   
   .popup__error_visible {

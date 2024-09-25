@@ -165,7 +165,6 @@ export function deleteCardOpening(cardId, cardElement) {
     cardElement
   }
   openModal(deleteCardPopup);
-  cardDeleting.addEventListener('submit', deleteCardSubmit);
 };
 
 // Обработка сабмита в модальном окне удаления карточки
@@ -210,6 +209,10 @@ profileEditPopup.addEventListener('submit', profileSubmit);
 // Добавление новой карточки
 cardAdding.addEventListener('submit', newCardSubmit);
 
+// Удаление карточки
+cardDeleting.addEventListener('submit', deleteCardSubmit);
+
+
 // Изменение аватара
 avatarEditing.addEventListener('submit', avatarSubmit);
 
@@ -242,9 +245,6 @@ Promise.all([getUserData(), getInitialCards()])
   // Функция, показывающая пользователю процесс загрузки
   function renderLoading(button, load, loadText = 'Сохранение...', defaultText = 'Сохранить') {
     if (load) {
-        button.textContent = loadText;   
-    }
-    else {
-        button.textContent = defaultText;   
+      button.textContent = load ? loadText : defaultText;   
     }
   }  

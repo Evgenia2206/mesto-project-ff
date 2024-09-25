@@ -8,8 +8,6 @@ export function createCard(userId, cardData, deleteCardOpening, openImageModal, 
   cardImage.src = cardData.link;
   cardImage.alt = cardData.name;
   cardElement.querySelector('.card__title').textContent = cardData.name;
-  const deleteButton = cardElement.querySelector('.card__delete-button'); 
-  deleteButton.addEventListener('click', () => deleteCardOpening(cardData._id, cardElement));
   cardImage.addEventListener('click', () => openImageModal(cardData.link, cardData.name));
   const likeButton = cardElement.querySelector('.card__like-button');
   const likeCounter = cardElement.querySelector('.card__like-counter');
@@ -18,10 +16,13 @@ export function createCard(userId, cardData, deleteCardOpening, openImageModal, 
   if (isLiked) { likeButton.classList.add("card__like-button_is-active"); }
   likeCounter.textContent = cardData.likes.length;
   likeButton.addEventListener('click', () => cardLike(cardData._id, likeButton, likeCounter));
+  const deleteButton = cardElement.querySelector('.card__delete-button'); 
   // Блокировка удаления чужой карточки
   if (cardData.owner._id !== userId) {
     deleteButton.disabled = true;
     deleteButton.style.display = "none";
+  } else {
+    deleteButton.addEventListener('click', () => deleteCardOpening(cardData._id, cardElement));
   }
   return cardElement;
 };
